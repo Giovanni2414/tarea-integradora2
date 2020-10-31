@@ -24,7 +24,7 @@ public class MainGame {
 	public String makeMovement(String mov) {
 		String msg = "";
 		if(mov.length() == 2) {
-			msg += 69 - mov.charAt(1);
+			msg += mov.charAt(1) - 66;
 		} else if (mov.length() == 3) {
 			
 		} else {
@@ -59,30 +59,39 @@ public class MainGame {
 		if(k > 0) {
 			int n = (int) Math.floor(Math.random() * this.n);
 			int m = (int) Math.floor(Math.random() * this.m);
-			setRandomMirrorsHelper1(miracle, n, m);
-			setRandomMirrors(miracle, k-1);
-		}
-	}
-	
-	private void setRandomMirrorsHelper1(Panel miracle, int n, int m) {
-		if(n > 0) {
-			setRandomMirrorsHelper1(miracle.getLowerPanel(), n-1, m);
-		} else {
-			setRandomMirrorsHelper2(miracle, m);
-		}
-	}
-	
-	private void setRandomMirrorsHelper2(Panel miracle, int m) {
-		if(m > 0) {
-			setRandomMirrorsHelper2(miracle.getRightPanel(), m-1);
-		} else {
-			int n = (int) Math.floor(Math.random()*3);
-			if(n % 2 == 0) {
-				miracle.setMirror("L");
+			Panel tempForSetMirror = setRandomMirrorsHelper1(miracle, n, m);
+			if(tempForSetMirror.getMirror().equalsIgnoreCase("N")) {
+				int c = (int) Math.floor(Math.random()*3);
+				if(c % 2 == 0) {
+					tempForSetMirror.setMirror("L");
+				} else {
+					tempForSetMirror.setMirror("R");
+				}
+				setRandomMirrors(miracle, k-1);
 			} else {
-				miracle.setMirror("R");
+				setRandomMirrors(miracle, k);
 			}
 		}
+	}
+	
+	private Panel setRandomMirrorsHelper1(Panel miracle, int n, int m) {
+		Panel box = null;
+		if(n > 0) {
+			box = setRandomMirrorsHelper1(miracle.getLowerPanel(), n-1, m);
+		} else {
+			return setRandomMirrorsHelper2(miracle, m);
+		}
+		return box;
+	}
+	
+	private Panel setRandomMirrorsHelper2(Panel miracle, int m) {
+		Panel box = null;
+		if(m > 0) {
+			box = setRandomMirrorsHelper2(miracle.getRightPanel(), m-1);
+		} else {
+			return miracle;
+		}
+		return box;
 	}
 	
 	private void createVerticalPanels(int n, int m, Panel miracle) {
@@ -116,6 +125,14 @@ public class MainGame {
 			secondMiracle.setHigherPanel(miracle);
 			createVerticalRelationsExtension(miracle.getRightPanel(), secondMiracle.getRightPanel(), n-1);
 		}
+	}
+	
+	private int getRemainingMirrors() {
+		return this.k;
+	}
+	
+	private void findedMirror() {
+		this.k--;
 	}
 	
 }
