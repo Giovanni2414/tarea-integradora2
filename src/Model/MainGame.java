@@ -28,9 +28,25 @@ public class MainGame {
 		} else if(String.valueOf(mov.charAt(mov.length()-1)).equalsIgnoreCase("H") || String.valueOf(mov.charAt(mov.length()-1)).equalsIgnoreCase("V")) {
 			
 		} else {
-			
+			int m = mov.charAt(mov.length()-1) - 64;
+			String prevN = getNumbersFromMov(mov, 0, "");
+			int n = Integer.parseInt(prevN.substring(0, mov.length()-1));
+			System.out.println(n + " " + m);
+			Panel enterPanel = searchPanel(firstPanel, n, m);
+			enterPanel.entrance = true;
+			Panel outPanel = managementMovements(enterPanel, n, m);
+			outPanel.out = true;
+			printGame(firstPanel, n, m);
 		}
 		return msg;
+	}
+	
+	private String getNumbersFromMov(String mov, int n, String num) {
+		if(n < mov.length()-1) {
+			num = String.valueOf(mov.charAt(n));
+			num += getNumbersFromMov(mov, n+1, num);
+		}
+		return num;
 	}
 	
 	private Panel searchPanel(Panel miracle, int n, int m) {
@@ -115,7 +131,6 @@ public class MainGame {
 	private Panel moveRight(Panel miracle) {
 		if(miracle.getRightPanel() != null) {
 			if((miracle.getRightPanel().getMirror()).equals("N")) {
-				System.out.println("Me moví");
 				miracle = moveRight(miracle.getRightPanel());
 			} else if((miracle.getRightPanel().getMirror()).equals("L")) {
 				miracle = moveDown(miracle.getRightPanel());
