@@ -49,9 +49,6 @@ public class Panel {
 		}
 		return msg;
 	}
-	public String getWithoutMirror() {
-		return "[ ]";
-	}
 	public void setHigherPanel(Panel h) {
 		higherPanel = h;
 	}
