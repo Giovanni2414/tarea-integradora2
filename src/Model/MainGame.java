@@ -31,8 +31,7 @@ public class MainGame {
 			int m = mov.charAt(mov.length()-1) - 64;
 			String prevN = getNumbersFromMov(mov, 0, "");
 			int n = Integer.parseInt(prevN.substring(0, mov.length()-1));
-			System.out.println(n + " " + m);
-			Panel enterPanel = searchPanel(firstPanel, n, m);
+			Panel enterPanel = searchPanel(firstPanel, m-1, n-1);
 			enterPanel.entrance = true;
 			Panel outPanel = managementMovements(enterPanel, n, m);
 			outPanel.out = true;
