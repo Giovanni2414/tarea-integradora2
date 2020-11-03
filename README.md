@@ -1,4 +1,4 @@
-<img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.muylinux.com%2F2020%2F03%2F20%2Fjdk-java-14%2F&psig=AOvVaw2z_cQnHu7ixNE5tLPOnuua&ust=1604475850691000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCMj298Lw5ewCFQAAAAAdAAAAABAD" style="max-width: 50px">
+<img src="https://www.programaenlinea.net/wp-content/uploads/2020/03/java.jpg" style="max-width: 50px">
 <h2> Mirrors Game</h2>
 <p>The idea of this project is create a game based in mirrors, created with linked lists, binary trees and recursive iterations</p>
 <h3>Requirements</h3>
