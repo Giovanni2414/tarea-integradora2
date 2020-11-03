@@ -156,7 +156,6 @@ public class MainGame {
 	private Panel moveLeft(Panel miracle) {
 		if(miracle.getLeftPanel() != null) {
 			if((miracle.getLeftPanel().getMirror()).equals("N")) {
-				System.out.println("Me moví");
 				miracle = moveLeft(miracle.getLeftPanel());
 			} else if((miracle.getLeftPanel().getMirror()).equals("L")) {
 				miracle = moveUp(miracle.getLeftPanel());
