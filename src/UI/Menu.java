@@ -21,7 +21,7 @@ public class Menu {
 	public void startMenu() throws IOException {
 		int option = 0;
 		do {
-			String msg = "Choose an option\n(1) New game\n(2) Move around the tab\nOption: ";
+			String msg = "Choose an option\n(1) New game\n(2) Move around the tab\n(3) Find mirror\nOption: ";
 			writeText(msg);
 			option = Integer.parseInt(rd.readLine());
 			switch(option) {
@@ -30,6 +30,9 @@ public class Menu {
 					break;
 				case 2:
 					makeMovement();
+					break;
+				case 3:
+					findMirror();
 					break;
 			}
 		} while(option != 0);
@@ -49,11 +52,18 @@ public class Menu {
 	}
 	
 	private void makeMovement() throws IOException {
-		String msg = "Enter the codification to make a movement (Example 1E): ";
+		String msg = "Enter the codification to make a movement (Example: 1E): ";
 		writeText(msg);
 		String mov = rd.readLine();
 		writeText(gm.makeMovement(mov));
-		writeText(gm.printGame(null, 0, 0));
+		writeText(gm.printInfoGame());
+	}
+	
+	private void findMirror() throws IOException {
+		String msg = "Enter the codification to find a mirror (Example: L1ER): ";
+		writeText(msg);
+		String loc = rd.readLine();
+		writeText(gm.makeMovement(loc));
 	}
 	
 }

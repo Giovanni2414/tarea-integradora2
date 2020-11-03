@@ -21,12 +21,31 @@ public class MainGame {
 		return "New game created for " + player.getName() + " " + k + " mirrors remaining\n";
 	}
 	
+	public String printInfoGame() {
+		return player.getName() + getRemainingMirrors() + " mirrors remaining\n";
+	}
+	
 	public String makeMovement(String mov) {
 		String msg = "";
 		if(String.valueOf(mov.charAt(0)).equalsIgnoreCase("L")) {
 			
-		} else if(String.valueOf(mov.charAt(mov.length()-1)).equalsIgnoreCase("H") || String.valueOf(mov.charAt(mov.length()-1)).equalsIgnoreCase("V")) {
+			String dir = String.valueOf(mov.charAt(mov.length()-1));
+			int m = mov.charAt(mov.length()-2) - 64;
+			int n = Integer.parseInt(mov.substring(1, mov.length()-2));
 			
+			
+		} else if(String.valueOf(mov.charAt(mov.length()-1)).equalsIgnoreCase("H") || String.valueOf(mov.charAt(mov.length()-1)).equalsIgnoreCase("V")) {
+			String dir = String.valueOf(mov.charAt(mov.length()-1));
+			int m = mov.charAt(mov.length()-2) - 64;
+			String prevN = getNumbersFromMovCor(mov, 0, "");
+			int n = Integer.parseInt(prevN.substring(0, mov.length()-2));
+			Panel enterPanel = searchPanel(firstPanel, m-1, n-1);
+			enterPanel.entrance = true;
+			Panel outPanel = managementMovementsCor(enterPanel, n, m, dir);
+			outPanel.out = true;
+			printGame(null, 0, 0);
+			enterPanel.entrance = false;
+			outPanel.out = false;
 		} else {
 			int m = mov.charAt(mov.length()-1) - 64;
 			String prevN = getNumbersFromMov(mov, 0, "");
@@ -35,7 +54,9 @@ public class MainGame {
 			enterPanel.entrance = true;
 			Panel outPanel = managementMovements(enterPanel, n, m);
 			outPanel.out = true;
-			printGame(firstPanel, n, m);
+			printGame(null, 0, 0);
+			enterPanel.entrance = false;
+			outPanel.out = false;
 		}
 		return msg;
 	}
@@ -109,8 +130,96 @@ public class MainGame {
 		return miracle;
 	}
 	
-	private Panel managementMovementsCorners(Panel miracle, int n, int m, String dir) {
-		
+	private Panel managementMovementsCor(Panel miracle, int n, int m, String dir) {
+		if(n == 1 && m == 1) {
+			if(dir.equals("V")) {
+				if(!miracle.getMirror().equals("N")) {
+					if((miracle.getMirror()).equals("L")) {
+						miracle = moveRight(miracle);
+					} else if((miracle.getMirror()).equals("R")) {
+						miracle = moveLeft(miracle);
+					}
+				} else {
+					miracle = moveDown(miracle);
+				}
+			} else {
+				if(!miracle.getMirror().equals("N")) {
+					if((miracle.getMirror()).equals("L")) {
+						miracle = moveDown(miracle);
+					} else if((miracle.getMirror()).equals("R")) {
+						miracle = moveUp(miracle);
+					}
+				} else {
+					miracle = moveRight(miracle);
+				}
+			}
+		} else if(n == this.n && m == 1) {
+			if(dir.equals("V")) {
+				if(!miracle.getMirror().equals("N")) {
+					if((miracle.getMirror()).equals("L")) {
+						miracle = moveLeft(miracle);
+					} else if((miracle.getMirror()).equals("R")) {
+						miracle = moveRight(miracle);
+					}
+				} else {
+					miracle = moveUp(miracle);
+				}
+			} else {
+				if(!miracle.getMirror().equals("N")) {
+					if((miracle.getMirror()).equals("L")) {
+						miracle = moveDown(miracle);
+					} else if((miracle.getMirror()).equals("R")) {
+						miracle = moveUp(miracle);
+					}
+				} else {
+					miracle = moveRight(miracle);
+				}
+			}
+		} else if(n == 1 && m == this.m) {
+			if(dir.equals("V")) {
+				if(!miracle.getMirror().equals("N")) {
+					if((miracle.getMirror()).equals("L")) {
+						miracle = moveRight(miracle);
+					} else if((miracle.getMirror()).equals("R")) {
+						miracle = moveLeft(miracle);
+					}
+				} else {
+					miracle = moveDown(miracle);
+				}
+			} else {
+				if(!miracle.getMirror().equals("N")) {
+					if((miracle.getMirror()).equals("L")) {
+						miracle = moveUp(miracle);
+					} else if((miracle.getMirror()).equals("R")) {
+						miracle = moveDown(miracle);
+					}
+				} else {
+					miracle = moveLeft(miracle);
+				}
+			}
+		} else if(n == this.n && m == this.m) {
+			if(dir.equals("V")) {
+				if(!miracle.getMirror().equals("N")) {
+					if((miracle.getMirror()).equals("L")) {
+						miracle = moveLeft(miracle);
+					} else if((miracle.getMirror()).equals("R")) {
+						miracle = moveRight(miracle);
+					}
+				} else {
+					miracle = moveUp(miracle);
+				}
+			} else {
+				if(!miracle.getMirror().equals("N")) {
+					if((miracle.getMirror()).equals("L")) {
+						miracle = moveUp(miracle);
+					} else if((miracle.getMirror()).equals("R")) {
+						miracle = moveDown(miracle);
+					}
+				} else {
+					miracle = moveLeft(miracle);
+				}
+			}
+		}
 		return miracle;
 	}
 	
@@ -245,18 +354,18 @@ public class MainGame {
 	}
 	
 	private void createVerticalRelations(Panel miracle, int n, int m) {
-		if (m > 1) {
+		if (n > 1) {
 			Panel secondMiracle = miracle.getLowerPanel();
-			createVerticalRelationsExtension(miracle, secondMiracle, n);
-			createVerticalRelations(secondMiracle, n, m-1);
+			createVerticalRelationsExtension(miracle, secondMiracle, m);
+			createVerticalRelations(secondMiracle, n-1, m);
 		}
 	}
 	
-	private void createVerticalRelationsExtension(Panel miracle, Panel secondMiracle, int n) {
-		if(n > 0) {
+	private void createVerticalRelationsExtension(Panel miracle, Panel secondMiracle, int m) {
+		if(m > 0) {
 			miracle.setLowerPanel(secondMiracle);
 			secondMiracle.setHigherPanel(miracle);
-			createVerticalRelationsExtension(miracle.getRightPanel(), secondMiracle.getRightPanel(), n-1);
+			createVerticalRelationsExtension(miracle.getRightPanel(), secondMiracle.getRightPanel(), m-1);
 		}
 	}
 	

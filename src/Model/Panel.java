@@ -10,30 +10,36 @@ public class Panel {
 	boolean visible;
 	boolean entrance;
 	boolean out;
+	boolean errFind;
 	
 	public Panel() {
 		higherPanel = null;
 		lowerPanel = null;
 		rightPanel = null;
 		leftPanel = null;
-		visible = true;
+		visible = false;
 		entrance = false;
 		out = false;
 		mirror = "N";
+		errFind = false;
 	}
 	
 	public String getMirrorView() {
 		String msg = "";
-		if(visible) {
-			if(mirror.equals("L")) {
-				msg = "[\\]";
-			} else if(mirror.equals("R")) {
-				msg = "[/]";
+		if(errFind) {
+			msg = "[X]";
+		} else {
+			if(visible) {
+				if(mirror.equals("L")) {
+					msg = "[\\]";
+				} else if(mirror.equals("R")) {
+					msg = "[/]";
+				} else {
+					msg = "[ ]";
+				}
 			} else {
 				msg = "[ ]";
 			}
-		} else {
-			msg = "[ ]";
 		}
 		if(entrance) {
 			msg = "[E]";
