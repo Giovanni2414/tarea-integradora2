@@ -53,6 +53,7 @@ public class Menu {
 		writeText(msg);
 		String mov = rd.readLine();
 		writeText(gm.makeMovement(mov));
+		writeText(gm.printGame(null, 0, 0));
 	}
 	
 }

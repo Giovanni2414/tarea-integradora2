@@ -7,17 +7,24 @@ public class Panel {
 	Panel rightPanel;
 	Panel leftPanel;
 	String mirror;
+	boolean visible;
+	boolean entrance;
+	boolean out;
 	
 	public Panel() {
 		higherPanel = null;
 		lowerPanel = null;
 		rightPanel = null;
 		leftPanel = null;
+		visible = true;
+		entrance = false;
+		out = false;
 		mirror = "N";
 	}
 	
-	public String getWithMirror() {
+	public String getMirrorView() {
 		String msg = "";
+		if(visible) {
 			if(mirror.equals("L")) {
 				msg = "[\\]";
 			} else if(mirror.equals("R")) {
@@ -25,6 +32,15 @@ public class Panel {
 			} else {
 				msg = "[ ]";
 			}
+		} else {
+			msg = "[ ]";
+		}
+		if(entrance) {
+			msg = "[E]";
+		}
+		if(out) {
+			msg = "[S]";
+		}
 		return msg;
 	}
 	public String getWithoutMirror() {

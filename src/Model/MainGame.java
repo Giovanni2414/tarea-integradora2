@@ -23,14 +23,134 @@ public class MainGame {
 	
 	public String makeMovement(String mov) {
 		String msg = "";
-		if(mov.length() == 2) {
-			msg += mov.charAt(1) - 66;
-		} else if (mov.length() == 3) {
+		if(String.valueOf(mov.charAt(0)).equalsIgnoreCase("L")) {
+			
+		} else if(String.valueOf(mov.charAt(mov.length()-1)).equalsIgnoreCase("H") || String.valueOf(mov.charAt(mov.length()-1)).equalsIgnoreCase("V")) {
 			
 		} else {
-			msg = "You has entered a invalid codification of Movement\n";
+			
 		}
 		return msg;
+	}
+	
+	private Panel searchPanel(Panel miracle, int n, int m) {
+		if(n > 0) {
+			miracle = searchPanel(miracle.getRightPanel(), n-1, m);
+		} else {
+			miracle = searchPanel2(miracle, m);
+		}
+		return miracle;
+	}
+	
+	private Panel searchPanel2(Panel miracle, int m) {
+		if(m > 0) {
+			miracle = searchPanel2(miracle.getLowerPanel(), m-1);
+		}
+		return miracle;
+	}
+	
+	private Panel managementMovements(Panel miracle, int n, int m) {
+		if(n == 1) {
+			if(!miracle.getMirror().equals("N")) {
+				if((miracle.getMirror()).equals("L")) {
+					miracle = moveRight(miracle);
+				} else if((miracle.getMirror()).equals("R")) {
+					miracle = moveLeft(miracle);
+				}
+			} else {
+				miracle = moveDown(miracle);
+			}
+		} else if(n == this.n) {
+			if(!miracle.getMirror().equals("N")) {
+				if((miracle.getMirror()).equals("L")) {
+					miracle = moveLeft(miracle);
+				} else if((miracle.getMirror()).equals("R")) {
+					miracle = moveRight(miracle);
+				}
+			} else {
+				miracle = moveUp(miracle);
+			}
+		} else if(m == 1) {
+			if(!miracle.getMirror().equals("N")) {
+				if((miracle.getMirror()).equals("L")) {
+					miracle = moveDown(miracle);
+				} else if((miracle.getMirror()).equals("R")) {
+					miracle = moveUp(miracle);
+				}
+			} else {
+				miracle = moveRight(miracle);
+			}
+		} else if(m == this.m) {
+			if(!miracle.getMirror().equals("N")) {
+				if((miracle.getMirror()).equals("L")) {
+					miracle = moveUp(miracle);
+				} else if((miracle.getMirror()).equals("R")) {
+					miracle = moveDown(miracle);
+				}
+			} else {
+				miracle = moveLeft(miracle);
+			}
+		}
+		return miracle;
+	}
+	
+	private Panel managementMovementsCorners(Panel miracle, int n, int m, String dir) {
+		
+		return miracle;
+	}
+	
+	private Panel moveDown(Panel miracle) {
+		if(miracle.getLowerPanel() != null) {
+			if((miracle.getLowerPanel().getMirror()).equals("N")) {
+				miracle = moveDown(miracle.getLowerPanel());
+			} else if((miracle.getLowerPanel().getMirror()).equals("L")) {
+				miracle = moveRight(miracle.getLowerPanel());
+			} else {
+				miracle = moveLeft(miracle.getLowerPanel());
+			}
+		}
+		return miracle;
+	}
+	
+	private Panel moveRight(Panel miracle) {
+		if(miracle.getRightPanel() != null) {
+			if((miracle.getRightPanel().getMirror()).equals("N")) {
+				System.out.println("Me moví");
+				miracle = moveRight(miracle.getRightPanel());
+			} else if((miracle.getRightPanel().getMirror()).equals("L")) {
+				miracle = moveDown(miracle.getRightPanel());
+			} else {
+				miracle = moveUp(miracle.getRightPanel());
+			}
+		}
+		return miracle;
+	}
+	
+	private Panel moveUp(Panel miracle) {
+		if(miracle.getHigherPanel() != null) {
+			if((miracle.getHigherPanel().getMirror()).equals("N")) {
+				miracle = moveUp(miracle.getHigherPanel());
+			} else if((miracle.getHigherPanel().getMirror()).equals("L")) {
+				miracle = moveLeft(miracle.getHigherPanel());
+			} else {
+				miracle = moveRight(miracle.getHigherPanel());
+			}
+		}
+		return miracle;
+	}
+	
+	private Panel moveLeft(Panel miracle) {
+		if(miracle.getLeftPanel() != null) {
+			if((miracle.getLeftPanel().getMirror()).equals("N")) {
+				System.out.println("Me moví");
+				miracle = moveLeft(miracle.getLeftPanel());
+			} else if((miracle.getLeftPanel().getMirror()).equals("L")) {
+				miracle = moveUp(miracle.getLeftPanel());
+			} else {
+				miracle = moveDown(miracle.getLeftPanel());
+			}
+		}
+		return miracle;
 	}
 	
 	public String printGame(Panel miracle, int n, int m) {
@@ -50,7 +170,7 @@ public class MainGame {
 	//Possible method
 	public void printHelper(Panel miracle, int m) {
 		if(m > 0) {
-			System.out.print(miracle.getWithMirror());
+			System.out.print(miracle.getMirrorView());
 			printHelper(miracle.getRightPanel(), m-1);
 		}
 	}
@@ -104,7 +224,7 @@ public class MainGame {
 	}
 	
 	private void createHorizontalPanels(int m, Panel miracle) {
-		if(m > 0) {
+		if(m > 1) {
 			miracle.setRightPanel(new Panel());
 			(miracle.getRightPanel()).setLeftPanel(miracle);
 			createHorizontalPanels(m-1, miracle.getRightPanel());
