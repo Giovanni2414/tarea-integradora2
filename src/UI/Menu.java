@@ -29,13 +29,17 @@ public class Menu {
 					newGame();
 					break;
 				case 2:
-					makeMovement();
+					showScores();
 					break;
 				case 3:
 					writeText("Good bye!");
 					break;
 			}
 		} while(option != 0);
+	}
+	
+	private void showScores() throws IOException {
+		writeText(gm.socreInOrden());
 	}
 	
 	private void writeText(String msg) throws IOException {
@@ -52,7 +56,7 @@ public class Menu {
 		String status = "InGame";
 		do {
 			status = makeMovement();
-		} while(status.equals("InGame"));
+		} while(!status.equals("menu"));
 	}
 	
 	private String makeMovement() throws IOException {

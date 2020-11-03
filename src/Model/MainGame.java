@@ -68,7 +68,7 @@ public class MainGame {
 	
 	private String exitGame() {
 		this.player.setScore();
-		String msg = savePlayer(this.player, this.rootBinaryTreePlayers);
+		String msg = saveP(this.player);
 		return msg;
 	}
 	
@@ -86,27 +86,49 @@ public class MainGame {
 		}
 	}
 	
-	private String savePlayer(Player p, Player root) {
-		String msg = "It cant be saved";
-		if(root == null) {
-			root = p;
+	private String saveP(Player p) {
+		String msg = "";
+		if(rootBinaryTreePlayers == null) {
+			rootBinaryTreePlayers = p;
 			msg = "Saved\n";
 		} else {
-			if(p.getScore() < root.getScore() && root.getLeft() == null) {
-				root.left = p;
-				msg = "Saved";
-			} else if(p.getScore() > root.getScore() && root.getRight() == null) {
-				root.right = p;
-				msg = "Saved";
+			msg = savePlayer(p, rootBinaryTreePlayers);
+		}
+		return msg;
+	}
+	
+	private String savePlayer(Player p, Player root) {
+		String msg = "";
+		if(p.getScore() <= root.getScore() && root.getLeft() == null) {
+			root.left = p;
+			p.father = root;
+			msg = "Saved\n";
+		} else if(p.getScore() > root.getScore() && root.getRight() == null) {
+			root.right = p;
+			p.father = root;
+			msg = "Saved\n";
+		} else {
+			if(p.getScore() < root.getScore() && root.getLeft() != null) {
+				msg = savePlayer(root.getLeft(), p);
 			} else {
-				if(p.getScore() < root.getScore() && root.getLeft() != null) {
-					msg = savePlayer(root.getLeft(), p);
-				} else {
-					msg = savePlayer(root.getRight(), p);
-				}
+				msg = savePlayer(root.getRight(), p);
 			}
 		}
 		return msg;
+	}
+	
+	public String socreInOrden() {
+		return scoreInOrden2(rootBinaryTreePlayers);
+	}
+	
+	private String scoreInOrden2(Player miracle) {
+		String sc = "";
+		if(miracle != null) {
+			sc += scoreInOrden2(miracle.getLeft());
+			sc += miracle.getName() + " Score = " + miracle.getScore() + "\n";
+			sc += scoreInOrden2(miracle.getRight());
+		}
+		return sc;
 	}
 	
 	private String getNumbersFromMov(String mov, int n, String num) {

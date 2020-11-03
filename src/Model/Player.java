@@ -11,6 +11,7 @@ public class Player {
 	private int failK;
 	public Player right;
 	public Player left;
+	public Player father;
 	
 	public Player(String nm, int n, int m, int k) {
 		name = nm;
@@ -23,6 +24,9 @@ public class Player {
 		left = null;
 	}
 	
+	public Player getFather() {
+		return father;
+	}
 	public Player getLeft() {
 		return left;
 	}
