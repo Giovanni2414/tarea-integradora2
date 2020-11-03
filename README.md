@@ -1,4 +1,4 @@
-<img src="https://www.programaenlinea.net/wp-content/uploads/2020/03/java.jpg" style="max-width: 50px">
+<img src="https://www.programaenlinea.net/wp-content/uploads/2020/03/java.jpg" style="max-width: 20px">
 <h2> Mirrors Game</h2>
 <p>The idea of this project is create a game based in mirrors, created with linked lists, binary trees and recursive iterations</p>
 <h3>Requirements</h3>
