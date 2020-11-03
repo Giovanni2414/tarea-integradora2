@@ -21,7 +21,7 @@ public class Menu {
 	public void startMenu() throws IOException {
 		int option = 0;
 		do {
-			String msg = "Choose an option\n(1) New game\n(2) Move around the tab\n(3) Find mirror\nOption: ";
+			String msg = "Choose an option\n(1) New game\n(2) Show players scores\n(3) Exit program\nOption: ";
 			writeText(msg);
 			option = Integer.parseInt(rd.readLine());
 			switch(option) {
@@ -32,7 +32,7 @@ public class Menu {
 					makeMovement();
 					break;
 				case 3:
-					findMirror();
+					writeText("Good bye!");
 					break;
 			}
 		} while(option != 0);
@@ -49,21 +49,18 @@ public class Menu {
 		String[] partition = rd.readLine().split(" ");
 		writeText(gm.startNewGame(Integer.parseInt(partition[1]), Integer.parseInt(partition[2]), partition[0], Integer.parseInt(partition[3])));
 		writeText(gm.printGame(null, 0, 0));
+		String status = "InGame";
+		do {
+			status = makeMovement();
+		} while(status.equals("InGame"));
 	}
 	
-	private void makeMovement() throws IOException {
-		String msg = "Enter the codification to make a movement (Example: 1E): ";
+	private String makeMovement() throws IOException {
+		String msg = "Enter the codification to make a movement (Example: 1E, L1ER or 'Menu'): ";
 		writeText(msg);
 		String mov = rd.readLine();
 		writeText(gm.makeMovement(mov));
-		writeText(gm.printInfoGame());
-	}
-	
-	private void findMirror() throws IOException {
-		String msg = "Enter the codification to find a mirror (Example: L1ER): ";
-		writeText(msg);
-		String loc = rd.readLine();
-		writeText(gm.makeMovement(loc));
+		return mov;
 	}
 	
 }

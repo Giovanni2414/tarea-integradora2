@@ -9,11 +9,15 @@ public class MainGame {
 	Player player;
 	Player rootBinaryTreePlayers;
 	
+	public MainGame() {
+		rootBinaryTreePlayers = null;
+	}
+	
 	public String startNewGame(int n, int m, String name, int k) {
 		this.n = n;
 		this.m = m;
 		this.k = k;
-		player = new Player(name);
+		player = new Player(name, n, m, k);
 		this.firstPanel = new Panel();
 		createVerticalPanels(n, m, firstPanel);
 		createVerticalRelations(firstPanel, n, m);
@@ -28,12 +32,10 @@ public class MainGame {
 	public String makeMovement(String mov) {
 		String msg = "";
 		if(String.valueOf(mov.charAt(0)).equalsIgnoreCase("L")) {
-			
 			String dir = String.valueOf(mov.charAt(mov.length()-1));
 			int m = mov.charAt(mov.length()-2) - 64;
 			int n = Integer.parseInt(mov.substring(1, mov.length()-2));
-			
-			
+			findMirror(firstPanel, n, m, dir);
 		} else if(String.valueOf(mov.charAt(mov.length()-1)).equalsIgnoreCase("H") || String.valueOf(mov.charAt(mov.length()-1)).equalsIgnoreCase("V")) {
 			String dir = String.valueOf(mov.charAt(mov.length()-1));
 			int m = mov.charAt(mov.length()-2) - 64;
@@ -46,6 +48,9 @@ public class MainGame {
 			printGame(null, 0, 0);
 			enterPanel.entrance = false;
 			outPanel.out = false;
+		} else if (mov.equalsIgnoreCase("Menu")) {
+			msg = exitGame();
+			
 		} else {
 			int m = mov.charAt(mov.length()-1) - 64;
 			String prevN = getNumbersFromMov(mov, 0, "");
@@ -61,7 +66,58 @@ public class MainGame {
 		return msg;
 	}
 	
+	private String exitGame() {
+		this.player.setScore();
+		String msg = savePlayer(this.player, this.rootBinaryTreePlayers);
+		return msg;
+	}
+	
+	private void findMirror(Panel miracle, int n, int m, String dir) {
+		miracle = searchPanel(miracle, m-1, n-1);
+		if(miracle.getMirror().equalsIgnoreCase(dir)) {
+			miracle.visible = true;
+			miracle.errFind = false;
+			findedMirror();
+			printGame(null, 0, 0);
+		} else {
+			miracle.errFind = true;
+			player.addFailedAttemp();
+			printGame(null, 0,0);
+		}
+	}
+	
+	private String savePlayer(Player p, Player root) {
+		String msg = "It cant be saved";
+		if(root == null) {
+			root = p;
+			msg = "Saved\n";
+		} else {
+			if(p.getScore() < root.getScore() && root.getLeft() == null) {
+				root.left = p;
+				msg = "Saved";
+			} else if(p.getScore() > root.getScore() && root.getRight() == null) {
+				root.right = p;
+				msg = "Saved";
+			} else {
+				if(p.getScore() < root.getScore() && root.getLeft() != null) {
+					msg = savePlayer(root.getLeft(), p);
+				} else {
+					msg = savePlayer(root.getRight(), p);
+				}
+			}
+		}
+		return msg;
+	}
+	
 	private String getNumbersFromMov(String mov, int n, String num) {
+		if(n < mov.length()-1) {
+			num = String.valueOf(mov.charAt(n));
+			num += getNumbersFromMov(mov, n+1, num);
+		}
+		return num;
+	}
+	
+	private String getNumbersFromMovCor(String mov, int n, String num) {
 		if(n < mov.length()-1) {
 			num = String.valueOf(mov.charAt(n));
 			num += getNumbersFromMov(mov, n+1, num);
@@ -375,6 +431,7 @@ public class MainGame {
 	
 	private void findedMirror() {
 		this.k--;
+		player.setRestMirrors(k);
 	}
 	
 }
