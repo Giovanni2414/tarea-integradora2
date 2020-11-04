@@ -33,6 +33,7 @@ public class Menu {
 					break;
 				case 3:
 					writeText("Good bye!");
+					option = 0;
 					break;
 			}
 		} while(option != 0);
