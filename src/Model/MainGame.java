@@ -29,6 +29,10 @@ public class MainGame {
 		return player.getName() + getRemainingMirrors() + " mirrors remaining\n";
 	}
 	
+	private void endGame() {
+		
+	}
+	
 	public String makeMovement(String mov) {
 		String msg = "";
 		if(String.valueOf(mov.charAt(0)).equalsIgnoreCase("L")) {
@@ -50,7 +54,6 @@ public class MainGame {
 			outPanel.out = false;
 		} else if (mov.equalsIgnoreCase("Menu")) {
 			msg = exitGame();
-			
 		} else {
 			int m = mov.charAt(mov.length()-1) - 64;
 			String prevN = getNumbersFromMov(mov, 0, "");
@@ -454,6 +457,9 @@ public class MainGame {
 	private void findedMirror() {
 		this.k--;
 		player.setRestMirrors(k);
+		if(player.getRK() == 0) {
+			exitGame();
+		}
 	}
 	
 }
